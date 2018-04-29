@@ -9,4 +9,6 @@
 
 运行
    直接用AS运行即可
+   
+ ![dsaf](H264AnalyzerAndroid/Selection_003.png);
 
