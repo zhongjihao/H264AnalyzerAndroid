@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.android.h264.h264analyzerandroid.MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/titleRlayout"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_height="20dip">
+
+        <ImageView
+            android:id="@+id/titleIcon"
+            android:layout_width="20dip"
+            android:layout_height="20dip"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_264_ico" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dip"
+            android:layout_toRightOf="@+id/titleIcon"
+            android:text="@string/titleName"
+            android:textColor="#000"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/titleRlayout"
+        android:layout_height="70dip"
+        android:background="@mipmap/main_theme_h264" />
+
+    <RelativeLayout
+        android:id="@+id/filepathLlayout"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/imageView"
+        android:layout_height="35dip">
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/filePath_tv"
+            android:textColor="#000"
+            android:textSize="12sp" />
+
+        <EditText
+            android:id="@+id/file_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/title_tv"
+            android:layout_toLeftOf="@+id/openfile_btn"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:hint="@string/filePath_edit"
+            android:textColor="#000"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/openfile_btn"
+            android:layout_width="50dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:text="@string/open_btn"
+            android:gravity="center"
+            android:textColor="#000"
+            android:textSize="10sp" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/nalllayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/filepathLlayout"
+        android:layout_above="@+id/bottomRlayout"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/naltitle_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/naltitle_tv"
+                android:textColor="#000"
+                android:textSize="10sp" />
+
+            <CheckBox
+                android:id="@+id/totalnal_cb"
+                android:layout_width="wrap_content"
+                android:layout_height="18dip"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="10dip"
+                android:text="@string/totalnal_cb"
+                android:textSize="10sp" />
+
+            <ListView
+                android:id="@+id/naltype_lv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:fadeScrollbars="false"
+                android:layout_below="@+id/totalnal_cb"/>
+
+            <TextView
+                android:id="@+id/empty_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/nalempty_tv"
+                android:textColor="#ffafafaf"
+                android:textSize="18sp"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/nalinfo_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/nalinfo_tv"
+                android:textColor="#000"
+                android:textSize="10sp" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nalinfo_tv"
+                android:layout_marginTop="15dip"
+                android:fadeScrollbars="false"
+                android:scrollbars="vertical">
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fadeScrollbars="false"
+                    android:scrollbars="horizontal">
+
+                    <TextView
+                        android:id="@+id/naliteminfo_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000"
+                        android:textSize="15sp" />
+                </HorizontalScrollView>
+            </ScrollView>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottomRlayout"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dip"
+        android:layout_height="40dip">
+
+        <Button
+            android:id="@+id/exit_btn"
+            android:layout_width="50dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dip"
+            android:text="@string/exit_btn"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/about_btn"
+            android:layout_width="50dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="8dip"
+            android:layout_toLeftOf="@+id/exit_btn"
+            android:text="@string/about_btn"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/start_btn"
+            android:layout_width="50dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="8dip"
+            android:layout_toLeftOf="@+id/about_btn"
+            android:text="@string/start_btn"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

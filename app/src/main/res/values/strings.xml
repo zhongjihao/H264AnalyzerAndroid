@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">H264AnalyzerAndroid</string>
+    <string name="titleName">H264分析器</string>
+    <string name="filePath_tv">文件路劲:</string>
+    <string name="filePath_edit">请选择要分析的h264碼流文件</string>
+    <string name="filePath_btn">打开</string>
+    <string name="start_btn">开始</string>
+    <string name="about_btn">关于</string>
+    <string name="exit_btn">关闭</string>
+    <string name="open_btn">打开</string>
+    <string name="naltitle_tv">Nal 列表</string>
+    <string name="totalnal_cb">最多输出300条</string>
+    <string name="nalinfo_tv">单击NAL显示详细信息</string>
+    <string name="number_tv">Number</string>
+    <string name="idc_tv">nal_reference_idc</string>
+    <string name="naltype_tv">NAL Type(nal_unit_type)</string>
+    <string name="nallen_tv">NAL Size(len)</string>
+    <string name="nalempty_tv">什么都没有哦~</string>
+    <string name="open_file_tips">请选择一个要分析的h264碼流文件</string>
+    <string name="file_select_tool_tips">请安装文件管理器</string>
+    <string name="file_read_permission_tips">请开启文件读取权限</string>
+    <string name="parse_file_tips">选择的文件必须是h264碼流文件</string>
+    <string name="about_info">本项目主要可以用来学习H.264码流结构.在对H.264的NAL进行解析的过程中,用到了另外一个开源工程：h264bitstream,可以比较详细的列出NAL的信息.</string>
+</resources>
