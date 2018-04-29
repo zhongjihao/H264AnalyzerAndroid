@@ -280,7 +280,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             cursor = context.getContentResolver().query(contentURI,
                     new String[]{ MediaStore.MediaColumns.DATA},
                     null, null, null);
-            Log.d("MainActivity", "===zhongjihao=====2=contentURI: "+contentURI.toString()+"  cursor: "+(cursor !=null));
+            Log.d("MainActivity", "===zhongjihao=====2===contentURI: "+contentURI.toString()+"  cursor: "+(cursor !=null));
             if (cursor != null && cursor.moveToFirst()) {
                 int index = cursor.getColumnIndexOrThrow( MediaStore.MediaColumns.DATA);
                 result = cursor.getString(index);
