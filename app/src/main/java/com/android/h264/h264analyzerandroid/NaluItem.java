@@ -1,7 +1,7 @@
 package com.android.h264.h264analyzerandroid;
 
 /**
- * Created by apadmin on 18-4-25.
+ * Created by zhongjihao on 18-4-25.
  */
 
 public class NaluItem {
