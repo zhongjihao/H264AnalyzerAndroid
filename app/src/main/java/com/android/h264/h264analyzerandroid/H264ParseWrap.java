@@ -50,6 +50,7 @@ public class H264ParseWrap {
         if (cPtr != 0) {
             H264AnalyzeNativeJni.stopH264Engine(cPtr);
         }
+        mInstance = null;
     }
 
 }

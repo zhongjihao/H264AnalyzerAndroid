@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Process;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -270,6 +271,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showFileChooser();
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        msgHandler.removeMessages(H264_TOTAL_ITME_RESULT);
+        dataList = null;
+        adapter = null;
+        android.os.Process.killProcess(Process.myPid());
     }
 
     private String getPathFromURI(Context context, Uri contentURI) {
