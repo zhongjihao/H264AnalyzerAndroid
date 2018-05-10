@@ -24,3 +24,7 @@
 
 ![fasd](Selection_008.png);
 
+
+
+附加上一个h264碼流文件cuc_ieschool.h264，具体在app/src/main/jni/h264analyzer/h264bitstream/下，测试时将它拷贝到手机上即可
+
