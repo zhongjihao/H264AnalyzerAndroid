@@ -20,5 +20,6 @@
     <string name="file_select_tool_tips">请安装文件管理器</string>
     <string name="file_read_permission_tips">请开启文件读取权限</string>
     <string name="parse_file_tips">选择的文件必须是h264碼流文件</string>
+    <string name="loading">玩命加载中...</string>
     <string name="about_info">本项目主要可以用来学习H.264码流结构.在对H.264的NAL进行解析的过程中,用到了另外一个开源工程：h264bitstream,可以比较详细的列出NAL的信息.</string>
 </resources>

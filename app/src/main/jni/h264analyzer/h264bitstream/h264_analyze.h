@@ -29,7 +29,9 @@ public:
 	H264Analyze();
 	~H264Analyze();
     void setH264BitStreamFilePath(const char* filePath);
+	//记录一条nalu在文件中的偏移量
 	int appendNaLInfo(int data_lenth,int data_offset);
+	//解析一条nalu
 	const char* probe_nal_unit(int index);
 };
 

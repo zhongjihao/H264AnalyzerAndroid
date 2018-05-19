@@ -47,7 +47,6 @@ typedef struct {
 } NALU_t;
 
 typedef struct {
-	int nal_index;
 	char nal_idc[10];
 	char nal_type[10];
 	int nal_len;
@@ -58,11 +57,14 @@ class NalParse
 private:
 	static int info2;
 	static int info3;
-	NALU_t* pNalu;
-	bool checkBoxNal;
-	int showNalCount;
-	std::vector<NALU_ITEM*> nalItems;
-	H264Analyze* pH264Analyze;
+	long filePos;          //标识Nalu在文件的位置
+	NALU_t* pNalu;         //Nalu单元指针
+	bool checkBoxNal;      //标识checkBox是否被选择
+	int showNalCount;      //checkBox显示的nal数目
+	int nalCount;          //统计界面上ListView的适配器nalu数据集的个数
+    int totalNalu;         //记录文件中总的nalu
+	std::vector<NALU_ITEM*> nalItems;  //存放找到的nalu
+	H264Analyze* pH264Analyze;   //解析每条nalu的具体内容
 private:
 	NalParse(const NalParse&);
 	NalParse& operator=(const NalParse&);
@@ -74,7 +76,10 @@ public:
 	~NalParse();
 	void setCheckBox(bool isCheck,int showNalCount);
 	H264Analyze* & getH264Analyze();
-	std::vector<NALU_ITEM*>& h264_nal_parse(const char *fileurl);
+    //从文件中统计所有的nalu
+	int h264_nal_total(const char *fileurl);
+    //从文件中提取loadNalNum个的nalu
+	std::vector<NALU_ITEM*>& h264_nal_parse(const char *fileurl,int loadNalNum);
 };
 
 #endif

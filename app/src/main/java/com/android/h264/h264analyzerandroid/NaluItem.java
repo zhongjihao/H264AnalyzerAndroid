@@ -5,17 +5,12 @@ package com.android.h264.h264analyzerandroid;
  */
 
 public class NaluItem {
-    private int nal_index;
     private String nal_idc;
     private String nal_type;
     private int nal_len;
 
     public NaluItem() {
 
-    }
-
-    public int getNal_index() {
-        return nal_index;
     }
 
     public String getNal_idc() {
@@ -28,10 +23,6 @@ public class NaluItem {
 
     public int getNal_len() {
         return nal_len;
-    }
-
-    public void setNal_index(int index) {
-        this.nal_index = index;
     }
 
     public void setNal_idc(String nal_idc) {

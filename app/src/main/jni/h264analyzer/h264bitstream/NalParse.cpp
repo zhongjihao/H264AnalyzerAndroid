@@ -8,6 +8,7 @@
 #define LOG_TAG "NalParse"
 
 #include <stdio.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 #include <memory.h>
@@ -18,7 +19,7 @@
 int NalParse::info2 = 0;
 int NalParse::info3 = 0;
 
-NalParse::NalParse() : checkBoxNal(false),showNalCount(0)
+NalParse::NalParse() : checkBoxNal(false),showNalCount(0),filePos(0),nalCount(0),totalNalu(0)
 {
     LOGD("%s: ====zhongjihao=========",__FUNCTION__);
     nalItems.clear();
@@ -179,14 +180,48 @@ H264Analyze* & NalParse::getH264Analyze()
     return pH264Analyze;
 }
 
-std::vector<NALU_ITEM*>& NalParse::h264_nal_parse(const char *fileurl)
+int NalParse::h264_nal_total(const char *fileurl)
+{
+	FILE* fp = fopen(fileurl, "r");
+	if(fp == NULL){
+		LOGE("%s: ===zhongjihao====Error open file : %s",__FUNCTION__,strerror(errno));
+		return 0;
+	}
+	LOGD("%s: =====zhongjihao====open file OK===",__FUNCTION__);
+	memset(pNalu->buf,0, pNalu->max_size);
+    totalNalu = 0;
+    while (!feof(fp)) {
+        int data_lenth;
+        data_lenth = GetAnnexbNALU(fp, pNalu);//每执行一次，文件的指针指向本次找到的NALU的末尾，下一个位置即为下个NALU的起始码
+        if (data_lenth == 0 || data_lenth == -1)
+            continue;
+        totalNalu++;
+    }
+	if (fp) {
+		fclose(fp);
+	}
+    filePos = 0;
+    nalCount = 0;
+	pH264Analyze->setH264BitStreamFilePath(fileurl);
+    if(checkBoxNal)
+        return showNalCount;
+	return totalNalu;
+}
+
+std::vector<NALU_ITEM*>& NalParse::h264_nal_parse(const char *fileurl,int loadNalNum)
 {
     FILE* fp = fopen(fileurl, "r");
 	if(fp == NULL){
-		LOGE("%s: ===zhongjihao====Error open file==",__FUNCTION__);
+		LOGE("%s: ===zhongjihao====Error open file : %s",__FUNCTION__,strerror(errno));
 		return nalItems;
 	}
 	LOGD("%s: =====zhongjihao====open file OK===",__FUNCTION__);
+    int ret = fseek(fp,filePos,SEEK_SET);
+    if(ret == -1){
+        LOGE("%s: ===zhongjihao====Error fseek file : %s",__FUNCTION__,strerror(errno));
+        return nalItems;
+    }
+
     for(vector<NALU_ITEM*>::iterator it  = nalItems.begin(); it != nalItems.end();)
     {
         //释放空间
@@ -195,9 +230,7 @@ std::vector<NALU_ITEM*>& NalParse::h264_nal_parse(const char *fileurl)
         it = nalItems.erase(it);
     }
     memset(pNalu->buf,0, pNalu->max_size);
-    pH264Analyze->setH264BitStreamFilePath(fileurl);
-	int data_offset = 0;
-	int nal_num = 0;
+
 	LOGD("-----+-------- NALU Table ------+--------");
 	LOGD(" NUM |    POS   | IDC | TYPE |   LEN    |");
 	LOGD("-----+----------+-----+------+-----------");
@@ -210,10 +243,12 @@ std::vector<NALU_ITEM*>& NalParse::h264_nal_parse(const char *fileurl)
 	{
 		int data_lenth;
 		data_lenth = GetAnnexbNALU(fp,pNalu);//每执行一次，文件的指针指向本次找到的NALU的末尾，下一个位置即为下个NALU的起始码
-        pNalu->data_offset = data_offset;
+        if(data_lenth == 0 || data_lenth == -1)
+            continue;
+        pNalu->data_offset = (ftell(fp) - data_lenth);
 		//输出NALU的长度和类型
 		int nal_reference_idc = pNalu->nal_reference_idc >> 5;
-		LOGD("%5d%9d   %2d %6d   %5d\n",nal_num,pNalu->data_offset,nal_reference_idc,pNalu->nal_unit_type,pNalu->len);
+		LOGD("%5d%9d   %2d %6d   %5d   filePos: %ld  data_lenth: %d\n",nalCount,pNalu->data_offset,nal_reference_idc,pNalu->nal_unit_type,pNalu->len,ftell(fp),data_lenth);
 
         char type_str[10] = {0};
         switch(pNalu->nal_unit_type)
@@ -280,22 +315,24 @@ std::vector<NALU_ITEM*>& NalParse::h264_nal_parse(const char *fileurl)
         }
         NALU_ITEM* nalItem = new NALU_ITEM;
         memset(nalItem,0,sizeof(NALU_ITEM));
-        nalItem->nal_index = nal_num;
         nalItem->nal_len = pNalu->len;
         memcpy(nalItem->nal_idc,idc_str,strlen(idc_str));
         memcpy(nalItem->nal_type,type_str,strlen(type_str));
         nalItems.push_back(nalItem);
+        nalCount++;
 
         pH264Analyze->appendNaLInfo(pNalu->len+pNalu->startcodeprefix_len,pNalu->data_offset);
+        if (loadNalNum <= nalItems.size())
+            break;
+
 	//	printf("%5d%9d   %2d %6d   %5d\n",nal_num,pNalu->data_offset,nal_reference_idc,pNalu->nal_unit_type,pNalu->len);
 		//判断是否选中了"只输出300条"，如果选择了就不在分析了
-		if(checkBoxNal && nal_num>=showNalCount-1){
+		if(checkBoxNal && nalCount>=showNalCount){
 			break;
 		}
-		nal_num++;
-		data_offset = data_offset + data_lenth;
 	}
-    if(fp){
+    if (fp) {
+        filePos = ftell(fp);
         fclose(fp);
     }
 	return nalItems;
